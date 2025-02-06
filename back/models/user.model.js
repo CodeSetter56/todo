@@ -15,6 +15,9 @@ const userSchema = new mongoose.Schema({
         type:String,
         required:true,
     },
+    pfp:{
+        type:String,
+    },
     darkmode:{
         type:Boolean,
         default:false,

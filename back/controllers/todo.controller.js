@@ -1,5 +1,6 @@
 import Todo from "../models/todo.model.js"
 import User from "../models/user.model.js"
+import Notif from "../models/notif.model.js"
 import { v2 as cloudinary } from "cloudinary";
 
 export const getTodo = async(req,res)=>{
@@ -11,6 +12,13 @@ export const getTodo = async(req,res)=>{
 
     res.status(200).json(todos)
 } 
+
+export const getTodoCount = async (req, res) => {
+    const high = await Todo.countDocuments({ user: req.user._id, priority: "high", status: "pending" });
+    const normal = await Todo.countDocuments({ user: req.user._id, priority: "normal", status: "pending" });
+
+    res.status(200).json({ high, normal});
+};
 
 export const create = async(req,res)=>{
     const {text,title,priority,status} = req.body
@@ -34,6 +42,13 @@ export const create = async(req,res)=>{
         priority:priority||"normal",
         status:status||"pending"
     })
+
+    await Notif.create({
+        user: req.user._id,
+        todo: newtodo._id,
+        message: `Task: ${title} is pending with ${priority} priority`
+    });
+
     await newtodo.save()
     res.status(200).json(newtodo)
 } 
@@ -52,13 +67,23 @@ export const edit = async(req,res)=>{
     }
     if(newtext) todo.text = newtext
     if(newpriority) todo.priority = newpriority
-    if(newstatus) todo.status = newstatus
-    
+    if(newstatus) {
+        todo.status = newstatus
+        if (newstatus==="completed"){
+            await Notif.create({
+                user: req.user._id,
+                todo: todo._id,
+                message: `You completed the task: ${todo.title} on ${todo.updatedAt.toLocaleString()}`
+            });
+        }
+    }
+
     if (img) {
         if (todo.img) await cloudinary.uploader.destroy(todo.img.split("/").pop().split(".")[0]);
         const uploadRes = await cloudinary.uploader.upload(img);
         todo.img = uploadRes.secure_url;
     }
+
 
     await todo.save()
     res.status(200).json(todo)
@@ -78,3 +103,4 @@ export const deleteTodo = async(req,res)=>{
     await Todo.findByIdAndDelete(req.params.id)
     res.status(200).json({message:"todo deleted successfully"});
 }
+

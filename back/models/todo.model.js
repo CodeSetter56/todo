@@ -6,7 +6,7 @@ const todoSchema = new mongoose.Schema({
         ref:"User",
         required:true,
     },
-    prority:{
+    priority:{
         type:String,
         required:true,
         enum:["high","normal"]
@@ -14,7 +14,7 @@ const todoSchema = new mongoose.Schema({
     status:{
         type:String,
         required:true,
-        enum:["pending","compleated"]
+        enum:["pending","completed"]
     },
     text:{
         type:String,
@@ -22,6 +22,7 @@ const todoSchema = new mongoose.Schema({
     },
     title:{
         type:String,
+        unique:true,
         required:true,
     },
     img:{

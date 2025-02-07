@@ -7,6 +7,7 @@ import { dbconnect } from "./db/db.js";
 
 import authRoutes from "./routes/auth.route.js"
 import userRoutes from "./routes/user.route.js"
+import todoRoutes from "./routes/todo.route.js"
  
 dotenv.config()
 const app = express()
@@ -17,6 +18,7 @@ app.use(cookieParser())
 
 app.use("/api/auth/",authRoutes)
 app.use("/api/user/",userRoutes)
+app.use("/api/todo/",todoRoutes)
 
 app.listen(process.env.PORT,()=>{
     dbconnect()

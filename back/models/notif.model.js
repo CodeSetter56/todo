@@ -15,6 +15,10 @@ const notifSchema = new mongoose.Schema({
         type:Boolean,
         default:false,
     },
+    message:{
+        type:String,
+        required:true,
+    }
     
 },{timestamps:true})
 

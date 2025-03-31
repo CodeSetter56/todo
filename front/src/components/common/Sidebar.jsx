@@ -1,10 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 import { FiMenu, FiX } from "react-icons/fi";
 
 function Sidebar({ isOpen, setIsOpen, setIsPending }) {
     return (
-        <div className={`transition-all duration-300 bg-base-200 min-h-screen ${isOpen ? "w-80" : "w-16"} flex flex-col p-4`}>
-
+        <div className={`transition-all duration-300 bg-base-200 h-full ${isOpen ? "w-80" : "w-16"} flex flex-col p-4`}>
             {/* Top Section with Toggle Button */}
             <div className="flex items-center gap-2 justify-between">
                 {isOpen && <button className="btn btn-primary">Create todos</button>}

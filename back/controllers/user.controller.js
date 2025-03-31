@@ -1,12 +1,20 @@
 import { v2 as cloudinary } from "cloudinary";
 import bcrypt from "bcryptjs"
+import jwt from "jsonwebtoken"
 
 import User from "../models/user.model.js";
 
-export const profile = async(req,res)=>{
-    const user = await User.findById(req.user._id).select("-password")
-    res.status(200).json(user)
-}
+export const getme = async (req, res) => {
+    const token = req.cookies.jwt;
+    if (!token) return res.status(401).json({ error: "Not authenticated" });
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    const user = await User.findById(decoded.userid).select("-password"); 
+    if (!user) return res.status(404).json({ error: "User not found" });
+
+    res.status(200).json(user);
+};
 
 export const update = async(req,res)=>{
     const {newusername,newemail,currpass,newpass} = req.body

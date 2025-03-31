@@ -1,19 +1,28 @@
-import React from 'react'
+import { useState } from "react";
+import Login from "../auth/Login";
+import Register from "../auth/Register";
 
-function Home({ isPending }) {
+export default function Home() {
+  const [isRegister, setIsRegister] = useState(false);
+
   return (
-    <div className="p-4">
-      <div className="flex gap-x-2 items-center">
-        <span>Priority:</span>
-        <button className="btn w-24 bg-red-500 text-white rounded-4xl h-6"></button>
-        <button className="btn w-24 bg-green-500 text-white rounded-4xl h-6"></button>
+    <div className="flex h-full">
+      {/* Left Section */}
+      <div className="w-1/2">
+        <div className="text-7xl font-bold m-7 text-orange-600">
+          <div>Welcome,</div>
+          <div>User</div>
+        </div>
       </div>
-      <div className="mt-4">
-        {isPending ? <p>Pending</p> : <p>Completed</p>}
+
+      {/* Right Section */}
+      <div className="w-1/2 flex items-center justify-center">
+        <div className="bg-orange-600 w-5/6 h-5/6 p-5 rounded-4xl flex justify-center items-center">
+          <div className="bg-orange-200 w-5/6 h-5/6 p-5 rounded-4xl flex flex-col justify-center items-stretch">
+            {isRegister ? <Register toggleForm={() => setIsRegister(false)} /> : <Login toggleForm={() => setIsRegister(true)} />}
+          </div>
+        </div>
       </div>
     </div>
   );
 }
-
-
-export default Home

@@ -1,14 +1,13 @@
-import jwt from "jsonwebtoken"
+import jwt from "jsonwebtoken";
 import User from "../models/user.model.js";
 
-export const protectRoute = async(req,res,next)=>{
-    const token = req.cookies.jwt
-    if(!token) return res.status(400).json({error: "must login first"})
+export const protectRoute = async (req, res, next) => {
+    const token = req.cookies.jwt;
+    if (!token) return res.status(401).json({ error: "Must log in first" });
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-    const correcttoken = jwt.verify(token,process.env.JWT_SECRET)
-    if(!correcttoken)return res.status(400).json({ error: "invalid token"});
-
-    const user = await User.findById(correcttoken.userid).select("-password") //userid from utils/token.js
-    req.user = user
-    next()
-}
+    const user = await User.findById(decoded.userId).select("-password");
+    if (!user) return res.status(401).json({ error: "User not found" });
+    req.user = user;
+    next();
+};

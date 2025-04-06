@@ -1,47 +1,59 @@
-import React, { useState } from 'react';
-import { Routes, Route, useLocation } from 'react-router-dom';
-import Navbar from './components/common/Navbar';
-import Sidebar from './components/common/Sidebar';
-import Home from './pages/hero/Home';
-import Register from './pages/auth/Register';
-import Login from './pages/auth/Login';
-import Profile from './pages/profile/Profile';
-import Notifications from './pages/hero/Notifications';
-import Todo from './pages/hero/Todo';
+import React, { useEffect, useState } from "react";
+import { Routes, Route, useLocation, Navigate } from "react-router-dom";
+import { useAuth } from "./context/AuthContext";
+
+import Navbar from "./components/common/Navbar";
+import Sidebar from "./components/common/Sidebar";
+import Home from "./pages/hero/Home";
+import Profile from "./pages/profile/Profile";
+import Notifications from "./pages/hero/Notifications";
+import Todo from "./pages/hero/Todo";
+import Authorize from "./pages/auth/Authorize";
 
 function App() {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [isPending, setIsPending] = useState(true);
   const location = useLocation();
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [pageLoading, setPageLoading] = useState(false);
+  const [isPending, setIsPending] = useState(true);
 
-  // Check if current path is login or Register to hide sidebar
-  const hideRoutes = ['/','/login', '/register'];
-  const shouldShowSidebar = !hideRoutes.includes(location.pathname);
+  const { user, loadingUser } = useAuth();
+
+  const hideRoutes = ["/", "/authorize"];
+  const showSidebar = !hideRoutes.includes(location.pathname);
+
+  useEffect(() => {
+    setPageLoading(true);
+    const timeout = setTimeout(() => setPageLoading(false), 300); 
+    return () => clearTimeout(timeout);
+  }, [location.pathname]);
+
+  if (loadingUser || pageLoading) {
+    return (
+      <div className="flex flex-col gap-6 justify-center items-center h-screen px-4">
+        <div className="skeleton h-8 w-3/4"></div>
+        <div className="skeleton h-8 w-1/2"></div>
+        <div className="skeleton h-8 w-2/3"></div>
+        <div className="skeleton h-60 w-full max-w-md rounded-xl"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="h-screen flex flex-col">
-      {/* Navbar at the top */}
       <Navbar />
 
-      {/* Main content below Navbar */}
       <div className="flex flex-1 overflow-hidden">
-        {shouldShowSidebar && (
-          <Sidebar
-            isOpen={sidebarOpen}
-            setIsOpen={setSidebarOpen}
-            setIsPending={setIsPending}
-          />
+        {showSidebar && (
+          <Sidebar isOpen={sidebarOpen} setIsOpen={setSidebarOpen} isPending={isPending} setIsPending={setIsPending} />
         )}
 
-        {/* Main page content area */}
         <div className="flex-1 p-4 overflow-auto">
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/notifs" element={<Notifications />} />
-            <Route path="/todos" element={<Todo isPending={isPending} />} />
+            <Route path="/authorize" element={<Authorize />} />
+            <Route path="/profile" element={user ? <Profile /> : <Navigate to="/authorize" />} />
+            <Route path="/notifs" element={user ? <Notifications /> : <Navigate to="/authorize" />} />
+            <Route path="/todos" element={user ? <Todo isPending={isPending}/> : <Navigate to="/authorize" />} />
           </Routes>
         </div>
       </div>

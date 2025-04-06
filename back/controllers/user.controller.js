@@ -6,11 +6,15 @@ import User from "../models/user.model.js";
 
 export const getme = async (req, res) => {
     const token = req.cookies.jwt;
-    if (!token) return res.status(401).json({ error: "Not authenticated" });
 
+    if (!token) return res.status(401).json({ error: "Not authenticated" });
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-    const user = await User.findById(decoded.userid).select("-password"); 
+    if (!decoded.userId) {
+        return res.status(401).json({ error: "Token does not contain valid userId" });
+    }
+
+    const user = await User.findById(decoded.userId).select("-password");
     if (!user) return res.status(404).json({ error: "User not found" });
 
     res.status(200).json(user);

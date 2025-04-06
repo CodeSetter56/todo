@@ -1,10 +1,21 @@
 import React from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import { useAuth } from '../../context/AuthContext'
 
 function Navbar() {
+
+    const navigate = useNavigate()
+    const {user,logout} = useAuth() 
+
+    const handleLogout = async(e) =>{
+        e.preventDefault();
+        logout.mutate()
+    }
+
     return (
         <div className="navbar bg-base-100 shadow-sm">
             <div className="flex-1">
-                <a className="btn btn-ghost text-xl">EZtodos</a>
+                <Link to={"/"} className="btn btn-ghost text-xl">EZtodos</Link>
             </div>
             <div className="flex-none">
                 <div className="dropdown dropdown-end px-3">
@@ -16,7 +27,7 @@ function Navbar() {
                     </div>
                     <div
                         tabIndex={0}
-                        class="card card-compact dropdown-content bg-base-100 z-1 mt-3 w-52 shadow">
+                        className="card card-compact dropdown-content bg-base-100 z-1 mt-3 w-52 shadow">
                         <div className="card-body">
                             <span className="font-bold bg-red-600 text-white px-2 py-1">x left</span>
                             <span className="font-bold bg-green-600 text-white px-2 py-1">y left</span>
@@ -26,21 +37,26 @@ function Navbar() {
                         </div>
                     </div>
                 </div>
-                <div className="dropdown dropdown-end">
+                {user?
+                (<div className="dropdown dropdown-end">
                     <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
                         <div className="w-10 rounded-full">
                             <img
                                 alt="Tailwind CSS Navbar component"
-                                src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
+                                src={user.pfp || "https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"} />
                         </div>
                     </div>
                     <ul
                         tabIndex={0}
-                        class="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 p-2 shadow">
+                        className="menu menu-sm dropdown-content bg-base-200 rounded-box z-1 mt-3 p-2 shadow">
                         <li className='p-1'>Profile</li>
-                        <li className='p-1'>Logout</li>
+                        <li className='p-1'>
+                            <button className='btn btn-neutral text-lg' onClick={handleLogout}>Logout</button>
+                        </li>
                     </ul>
-                </div>
+                </div>)
+                :(<button className='btn ' onClick={()=>navigate("/authorize")}>Login</button>)
+                }
             </div>
         </div>
     )

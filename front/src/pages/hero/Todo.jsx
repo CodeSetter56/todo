@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 
 function Todo({ isPending }) {
   return (
@@ -15,5 +15,4 @@ function Todo({ isPending }) {
   );
 }
 
-
-export default Todo
+export default Todo;

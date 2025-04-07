@@ -22,12 +22,12 @@ export default function Login() {
       <h2 className="mb-3 text-3xl text-orange-700">Login to view your todos</h2>
       <form onSubmit={handleLogin} className="bg-orange-200 w-5/6 p-5 rounded-box border border-orange-700 flex flex-col items-center">
         <label className="text-black">Username</label>
-        <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} className="input" required />
+        <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} className="input " required />
 
         <label className="text-black mt-3">Password</label>
-        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} className="input" required />
+        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} className="input " required />
 
-        <button type="submit" className="btn btn-neutral mt-4 w-1/3" disabled={login.isPending}>Login</button>
+        <button type="submit" className="btn bg-orange-600 mt-4 w-1/3 " disabled={login.isPending}>Login</button>
         {errorMsg && (<p className="text-red-600 mt-3 text-sm text-center">{errorMsg}</p>)}
       </form>
       

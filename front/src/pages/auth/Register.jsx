@@ -64,7 +64,7 @@ export default function Register() {
             />
             <button
               type="submit"
-              className="btn btn-neutral h-full"
+              className="btn bg-orange-600 h-full"
               disabled={register.isPending}
             >
               Register
@@ -72,7 +72,6 @@ export default function Register() {
           </div>
         </div>
 
-        {/* Show error below form if any */}
         {errorMsg && (
           <p className="text-red-600 mt-3 text-sm text-center">{errorMsg}</p>
         )}

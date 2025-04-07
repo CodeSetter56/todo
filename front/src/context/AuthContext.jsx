@@ -62,9 +62,18 @@ export const AuthProvider = ({ children }) => {
     },
   });
 
+  const toggleDarkMode = useMutation({
+    mutationFn: async (newTheme) => {
+      await axios.post("/api/user/darkmode", { darkmode: newTheme }, { withCredentials: true });
+    },
+    onSuccess: async () => {
+      await refetchUser();
+    },
+  });
+
   return (
     <AuthContext.Provider
-      value={{user,loadingUser,login,register,logout}}>
+      value={{user,loadingUser,login,register,logout,toggleDarkMode}}>
       {children}
     </AuthContext.Provider>
   );

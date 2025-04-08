@@ -11,17 +11,17 @@ export default function Authorize() {
   const navigate = useNavigate()
 
   return (
-    <div className="flex h-full">
-      <div className="w-1/2">
-        <div className="text-7xl font-bold m-7 text-orange-600">
+    <div className="md:flex h-full ">
+      <div className="md:w-1/2">
+        <div className="text-4xl md:text-7xl font-bold m-7 text-orange-600">
           <div>Welcome,</div>
           <div>{user ? user.username : "User"}</div>
         </div>
       </div>
 
-      <div className="w-1/2 flex items-center justify-center">
-        <div className="bg-orange-600 w-5/6 h-5/6 p-5 rounded-4xl flex justify-center items-center">
-          <div className="bg-orange-200 w-5/6 h-5/6 p-5 rounded-4xl flex flex-col justify-center items-stretch">
+      <div className="md:w-1/2 flex items-center justify-center">
+        <div className="bg-orange-600 w-full h-full lg:w-5/6 lg:h-5/6 p-5 rounded-4xl flex justify-center items-center">
+          <div className="bg-orange-200 w-full h-full lg:w-5/6 lg:h-5/6 p-5 rounded-4xl flex flex-col justify-center items-stretch">
 
             {!user ? (
               login ? (

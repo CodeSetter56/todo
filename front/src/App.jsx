@@ -4,6 +4,7 @@ import { useAuth } from "./context/AuthContext";
 
 import Navbar from "./components/common/Navbar";
 import Sidebar from "./components/common/Sidebar";
+import MobileSidebar from "./components/common/MobileSidebar";
 import Home from "./pages/hero/Home";
 import Profile from "./pages/profile/Profile";
 import Notifications from "./pages/hero/Notifications";
@@ -23,7 +24,7 @@ function App() {
 
   useEffect(() => {
     setPageLoading(true);
-    const timeout = setTimeout(() => setPageLoading(false), 300); 
+    const timeout = setTimeout(() => setPageLoading(false), 300);
     return () => clearTimeout(timeout);
   }, [location.pathname]);
 
@@ -42,18 +43,31 @@ function App() {
     <div className="h-screen flex flex-col">
       <Navbar />
 
-      <div className="flex flex-1 overflow-hidden">
+      {showSidebar && (
+        <div className="md:hidden">
+          <MobileSidebar isPending={isPending} setIsPending={setIsPending} />
+        </div>
+      )}
+
+      <div className="flex-1 flex overflow-hidden">
         {showSidebar && (
-          <Sidebar isOpen={sidebarOpen} setIsOpen={setSidebarOpen} isPending={isPending} setIsPending={setIsPending} />
+          <div className="hidden md:flex">
+            <Sidebar
+              isOpen={sidebarOpen}
+              setIsOpen={setSidebarOpen}
+              isPending={isPending}
+              setIsPending={setIsPending}
+            />
+          </div>
         )}
 
-        <div className="flex-1 p-4 overflow-auto">
+        <div className="flex-1 overflow-auto p-4">
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/authorize" element={<Authorize />} />
             <Route path="/profile" element={user ? <Profile /> : <Navigate to="/authorize" />} />
             <Route path="/notifs" element={user ? <Notifications /> : <Navigate to="/authorize" />} />
-            <Route path="/todos" element={user ? <Todo isPending={isPending}/> : <Navigate to="/authorize" />} />
+            <Route path="/todos" element={user ? <Todo isPending={isPending} /> : <Navigate to="/authorize" />} />
           </Routes>
         </div>
       </div>

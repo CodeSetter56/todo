@@ -12,7 +12,7 @@ function Home() {
       {user && (
         <div className="flex flex-col items-center mt-4">
           <div>Welcome {user.username}</div>
-          <button className="btn m-1" onClick={() => navigate("/todos")}>
+          <button className="btn bg-orange-600 text-white rounded-2xl m-1" onClick={() => navigate("/todos")}>
             View Todos
           </button>
         </div>

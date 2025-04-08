@@ -17,9 +17,9 @@ function NotifBtn() {
             </div>
             <div
                 tabIndex={0}
-                className="card card-compact dropdown-content bg-base-200 z-1 mt-3 w-52 shadow">
+                className="card card-compact dropdown-content bg-base-200 z-1 mt-3 w-24 md:w-52 shadow">
                 <div className="p-2 flex flex-col gap-3">
-                    <div className='flex items-center justify-between'>
+                    <div className=' md:flex md:items-center md:justify-between'>
                         <p>Todos left:</p>
                         <div className='flex gap-2'>
                               <div className="font-bold rounded-2xl bg-red-600 px-3 py-1 text-white ">0</div>
@@ -27,7 +27,13 @@ function NotifBtn() {
                         </div>
                     </div>
                     <div className="card-actions ">
-                        <button className="btn btn-primary btn-block bg-base-content border-none shadow-none" onClick={()=>navigate("/notifs")}>View notifications</button>
+                          <button
+                              className="btn btn-primary btn-block bg-base-content border-none shadow-none"
+                              onClick={() => navigate("/notifs")}
+                          >
+                              <span className="block md:hidden">View</span>
+                              <span className="hidden md:block">View notifications</span>
+                          </button>
                     </div>
                 </div>
             </div>

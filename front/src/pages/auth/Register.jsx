@@ -36,7 +36,7 @@ export default function Register() {
             type="text"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
-            className="input"
+            className="input w-full"
             required
           />
         </div>
@@ -47,24 +47,24 @@ export default function Register() {
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="input"
+            className="input w-full"
             required
           />
         </div>
 
         <div className="flex flex-col justify-end w-full mt-3">
           <label className="text-black">Password</label>
-          <div className="flex gap-3 mt-1 items-center">
+          <div className="md:flex gap-3 mt-1 items-center">
             <input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="input flex-1"
+              className="input flex-1 w-full md:w-2/3"
               required
             />
             <button
               type="submit"
-              className="btn bg-orange-600 h-full"
+              className="btn bg-orange-600 md:h-full w-full md:w-1/3 h-8 mt-3 md:mt-0"
               disabled={register.isPending}
             >
               Register

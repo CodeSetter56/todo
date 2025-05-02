@@ -13,7 +13,7 @@ function MobileSidebar({ isPending, setIsPending }) {
             >
                 <Link
                     to={"/todos"}
-                    className="btn bg-transparent text-xl shadow-none border-0"
+                    className="font-bold text-2xl"
                 >
                     Todos
                 </Link>

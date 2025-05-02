@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { FiMenu, FiX } from "react-icons/fi";
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 function Sidebar({ isOpen, setIsOpen, isPending, setIsPending }) {
 
@@ -9,7 +9,7 @@ function Sidebar({ isOpen, setIsOpen, isPending, setIsPending }) {
     return (
         <div className={`transition-all duration-300 bg-base-200 h-full ${isOpen ? "w-80" : "w-16"} flex flex-col p-4`}>
             <div className="flex items-center gap-2 justify-between">
-                {isOpen && <button className="btn bg-transparent border-none shadow-none text-2xl" onClick={()=>navigate("/todos")}>Todos:</button>}
+                {isOpen && <Link className="font-bold text-2xl" to={"/todos"}>Todos:</Link>}
                 <button className="p-2 bg-base-content text-base-100 rounded" onClick={() => setIsOpen(!isOpen)}>
                     {isOpen ? <FiX className="stroke-current cursor-pointer" /> : <FiMenu className="stroke-current cursor-pointer"/>}
                 </button>

@@ -10,17 +10,21 @@ import Profile from "./pages/profile/Profile";
 import Notifications from "./pages/hero/Notifications";
 import Todo from "./pages/hero/Todo";
 import Authorize from "./pages/auth/Authorize";
+import TodoModal from "./components/common/TodoModal";
 
 function App() {
   const location = useLocation();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [pageLoading, setPageLoading] = useState(false);
   const [isPending, setIsPending] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false); 
 
   const { user, loadingUser } = useAuth();
 
+  // hide sidebars
   const hideRoutes = ["/", "/authorize"];
   const showSidebar = !hideRoutes.includes(location.pathname);
+
 
   useEffect(() => {
     setPageLoading(true);
@@ -28,6 +32,7 @@ function App() {
     return () => clearTimeout(timeout);
   }, [location.pathname]);
 
+  // skeletons
   if (loadingUser || pageLoading) {
     return (
       <div className="flex flex-col gap-6 justify-center items-center h-screen px-4">
@@ -45,7 +50,11 @@ function App() {
 
       {showSidebar && (
         <div className="md:hidden">
-          <MobileSidebar isPending={isPending} setIsPending={setIsPending} />
+          <MobileSidebar
+            isPending={isPending}
+            setIsPending={setIsPending}
+            setIsModalOpen={setIsModalOpen}
+          />
         </div>
       )}
 
@@ -57,6 +66,7 @@ function App() {
               setIsOpen={setSidebarOpen}
               isPending={isPending}
               setIsPending={setIsPending}
+              setIsModalOpen={setIsModalOpen}
             />
           </div>
         )}
@@ -65,12 +75,36 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/authorize" element={<Authorize />} />
-            <Route path="/profile" element={user ? <Profile /> : <Navigate to="/authorize" />} />
-            <Route path="/notifs" element={user ? <Notifications /> : <Navigate to="/authorize" />} />
-            <Route path="/todos" element={user ? <Todo isPending={isPending} /> : <Navigate to="/authorize" />} />
+            <Route
+              path="/profile"
+              element={user ? <Profile /> : <Navigate to="/authorize" />}
+            />
+            <Route
+              path="/notifs"
+              element={user ? <Notifications /> : <Navigate to="/authorize" />}
+            />
+            <Route
+              path="/todos"
+              element={user ? (
+                <Todo
+                  isPending={isPending}
+                  setIsModalOpen={setIsModalOpen} 
+                />
+              ) : (
+                <Navigate to="/authorize" />
+              )}
+            />
           </Routes>
         </div>
       </div>
+
+      {isModalOpen && (
+        <TodoModal
+          mode="create" 
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)} 
+        />
+      )}
     </div>
   );
 }

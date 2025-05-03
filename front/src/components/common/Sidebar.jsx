@@ -1,17 +1,18 @@
-import React, { useState } from "react";
+import React from "react";
 import { FiMenu, FiX } from "react-icons/fi";
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom';
 
-function Sidebar({ isOpen, setIsOpen, isPending, setIsPending }) {
-
-    const navigate = useNavigate()
+function Sidebar({ isOpen, setIsOpen, isPending, setIsPending, setIsModalOpen }) {
+    const openModal = () => {
+        setIsModalOpen(true); 
+    };
 
     return (
         <div className={`transition-all duration-300 bg-base-200 h-full ${isOpen ? "w-80" : "w-16"} flex flex-col p-4`}>
             <div className="flex items-center gap-2 justify-between">
                 {isOpen && <Link className="font-bold text-2xl" to={"/todos"}>Todos:</Link>}
                 <button className="p-2 bg-base-content text-base-100 rounded" onClick={() => setIsOpen(!isOpen)}>
-                    {isOpen ? <FiX className="stroke-current cursor-pointer" /> : <FiMenu className="stroke-current cursor-pointer"/>}
+                    {isOpen ? <FiX className="stroke-current cursor-pointer" /> : <FiMenu className="stroke-current cursor-pointer" />}
                 </button>
             </div>
 
@@ -24,7 +25,7 @@ function Sidebar({ isOpen, setIsOpen, isPending, setIsPending }) {
                         <button className="btn bg-base-100 w-full text-left" onClick={() => setIsPending(false)}>
                             Completed
                         </button>
-                        <button className="btn bg-base-content text-base-100 w-1/2 mx-auto">
+                        <button className="btn bg-base-content text-base-100 w-1/2 mx-auto" onClick={openModal}>
                             Create
                         </button>
                     </div>
